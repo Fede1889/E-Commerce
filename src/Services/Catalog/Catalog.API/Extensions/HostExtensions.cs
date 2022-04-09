@@ -35,7 +35,7 @@ namespace Discount.API.Extensions
                     //migration can't fail for network related exception. The retry options for database operations
                     //apply to transient exceptions                    
                     
-                    retry.Execute(() => ExecuteMigrations(configuration));
+                    //retry.Execute(() => ExecuteMigrations(configuration));
 
                     logger.LogInformation("Migrated postresql database.");
                 }

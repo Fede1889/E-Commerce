@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Basket.API.Entities
+﻿namespace EventBus.Messages.Events
 {
-    public class BasketCheckout
+    public class OrderEvent: IntegrationBaseEvent
     {
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
@@ -11,8 +9,5 @@ namespace Basket.API.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
-
-        //Articoli nel carrello
-        public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
     }
 }

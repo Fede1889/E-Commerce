@@ -30,6 +30,10 @@ namespace Ordering.API
             services.AddApplicationServices();
             services.AddInfrastructureServices(Configuration);
 
+            // General Configuration
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<BasketCheckoutConsumer>();
+
             // MassTransit-RabbitMQ Configuration
             services.AddMassTransit(config => {
 
@@ -39,17 +43,13 @@ namespace Ordering.API
                     cfg.Host(Configuration["EventBusSettings:HostAddress"]);
                     cfg.UseHealthCheck(ctx);
 
-                    cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c => {
+                    cfg.ReceiveEndpoint(EventBusConstants.BasketToCatalog, c => {
                         c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
                     });
                 });
             });
             services.AddMassTransitHostedService();
-
-            // General Configuration
-            services.AddScoped<BasketCheckoutConsumer>();
-            services.AddAutoMapper(typeof(Startup));
-
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

@@ -1,4 +1,6 @@
-﻿namespace EventBus.Messages.Events
+﻿using System.Collections.Generic;
+
+namespace EventBus.Messages.Events
 {
     //QUESTA E' LA STRUTTURA DELL'ORDINE
     public class BasketCheckoutEvent : IntegrationBaseEvent
@@ -6,20 +8,11 @@
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }
 
-        // BillingAddress
+        //Dati per l'invio
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
-        public string AddressLine { get; set; }
-        public string Country { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+        public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
 
-        // Payment
-        public string CardName { get; set; }
-        public string CardNumber { get; set; }
-        public string Expiration { get; set; }
-        public string CVV { get; set; }
-        public int PaymentMethod { get; set; }
     }
 }

@@ -54,21 +54,27 @@ namespace Basket.API.Controllers
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Checkout([FromBody] BasketCheckout basketCheckout)
+        public async Task<IActionResult> Checkout([FromBody] string userName)
         {
             // 1. ottenere il carrello dell'utente con il prezzo totale
-            var basket = await _repository.GetBasket(basketCheckout.UserName);
+            ShoppingCart basket = await _repository.GetBasket(userName);
             if (basket == null)
             {
                 return BadRequest();
             }
 
-            // 2. inviare l'oggetto che rappresenta la lista di oggetti alla coda
-            var eventMessage = _mapper.Map<BasketCheckoutEvent>(basketCheckout);
+            // 2. creazione BasketCheckout
+            BasketCheckout lista = new();
+            lista.UserName = userName;
+            lista.TotalPrice = basket.TotalPrice;
+            lista.Items = basket.Items;
+
+            // 3. inviare l'oggetto che rappresenta la lista di oggetti alla coda
+            var eventMessage = _mapper.Map<BasketCheckoutEvent>(lista);
             eventMessage.TotalPrice = basket.TotalPrice;
             await _publishEndpoint.Publish<BasketCheckoutEvent>(eventMessage);
 
-            // 3. svuotare il carrello
+            // 4. svuotare il carrello
             await _repository.DeleteBasket(basket.UserName);
 
             return Accepted();

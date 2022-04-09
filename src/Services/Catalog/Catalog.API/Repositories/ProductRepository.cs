@@ -62,7 +62,7 @@ namespace Catalog.API.Repositories
 
             var affected =await connection.ExecuteAsync
                     ("INSERT INTO Catalog (Id,Name, Category, Description, Price, Quantity) VALUES (@Id,@Name, @Category, @Description, @Price, @Quantity)",
-                            new { Name = product.Name, Category = product.Category, Description = product.Description, Price = product.Price, Quantity = product.Quantity });
+                            new { Id = product.Id,Name = product.Name, Category = product.Category, Description = product.Description, Price = product.Price, Quantity = product.Quantity });
             if (affected == 0)
                 return false;
 

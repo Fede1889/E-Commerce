@@ -30,7 +30,8 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
         {
             var orderEntity = _mapper.Map<Order>(request);
             Order newOrder = await _orderRepository.AddAsync(orderEntity);
-            if (newOrder != null)
+            var verifica = await _orderRepository.GetByIdAsync(orderEntity.Id);
+            if (verifica != null)
             {
                 _logger.LogInformation($"Order {newOrder.Id} is successfully created.");
                 await SendMail(newOrder);
@@ -41,7 +42,6 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
 
         private async Task SendMail(Order order)
         {
-            //var email = new Email() { To = "ezozkme@gmail.com", Body = $"Order was created.", Subject = "Order was created" };
             var email = new Email() { To = order.EmailAddress, Body = $"Order was created.", Subject = "Order was created" };
 
             try

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Basket.API.Entities
+namespace Catalog.API.Entities
 {
-    public class BasketCheckout
+    public class CheckOut
     {
         public string UserName { get; set; }
         public decimal TotalPrice { get; set; }

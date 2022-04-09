@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ordering.API.EventBusConsumer
 {
-    public class BasketCheckoutConsumer : IConsumer<BasketCheckoutEvent>
+    public class BasketCheckoutConsumer : IConsumer<OrderEvent>
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
@@ -22,10 +22,10 @@ namespace Ordering.API.EventBusConsumer
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task Consume(ConsumeContext<BasketCheckoutEvent> context)
+        public async Task Consume(ConsumeContext<OrderEvent> context)
         {
-            var command = _mapper.Map<CheckoutOrderCommand>(context.Message);            
-            var result = await _mediator.Send(command);
+            CheckoutOrderCommand command = _mapper.Map<CheckoutOrderCommand>(context.Message);
+            int result = await _mediator.Send(command);
             if(result >= 0) {
                 _logger.LogInformation("BasketCheckoutEvent consumed successfully. Created Order Id : {newOrderId}", result);
             }
@@ -34,7 +34,6 @@ namespace Ordering.API.EventBusConsumer
                 _logger.LogInformation("BasketCheckoutEvent not consumed successfully");
             }
 
-            
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Catalog.API.Controllers
             return Ok(products);
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetProduct")]   //specifichiamo che la lunghezza dell'ID passato con la richiesta GET deve essere di 24 caratteri
+        [HttpGet("{id}", Name = "GetProduct")]   //specifichiamo che la lunghezza dell'ID passato con la richiesta GET deve essere di 24 caratteri
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<Product>> GetProductById(string id)
@@ -86,7 +86,7 @@ namespace Catalog.API.Controllers
             return Ok(await _repository.UpdateProduct(product));
         }
 
-        [HttpDelete("{id:length(24)}", Name = "DeleteProduct")]        
+        [HttpDelete("{id}", Name = "DeleteProduct")]        
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
